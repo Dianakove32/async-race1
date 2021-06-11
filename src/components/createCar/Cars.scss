@@ -1,0 +1,17 @@
+.carsItem{
+    padding: 30px 0 3px 0;
+    border-bottom: 1px dashed rgb(250, 247, 247);
+}
+
+.btn-letter{
+    margin-right: 5px;
+    padding: 2px 3px;
+    background-color: rgb(14, 13, 13);
+    color: rgb(73, 70, 70);
+    border:1px solid rgb(73, 70, 70);
+    border-radius: 4px;
+}
+.itemContent{
+    display: flex;
+    align-items: center;
+}

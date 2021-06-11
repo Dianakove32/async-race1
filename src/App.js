@@ -1,24 +1,21 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import './App.scss';
+import Garage from './components/garage/Garage';
+
+import Winners from './components/winners/Winners';
 
 function App() {
   return (
+    <BrowserRouter>
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+
+   <Switch>
+ <Route exact path='/' component={Garage}/>
+ <Route path='/garage' component={Garage}/>
+ <Route path='/winners' component={Winners}/>
+ </Switch>
     </div>
+    </BrowserRouter>
   );
 }
 
