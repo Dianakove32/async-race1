@@ -5,16 +5,16 @@ const initialState={
     data:[],
     id:null,
     currentPage:1,
-    dataPage:10
+    dataPage:10,
+    winners:[],
+    velosity:{}
 }
 
 export default function ContextProvider({ children }) {
     const [state, setState] = useState(initialState)
     useEffect(() => {
         getCar()
-
     }, [])
-
 
  function getCar(){
           fetch("http://localhost:3000/garage")
@@ -24,8 +24,41 @@ export default function ContextProvider({ children }) {
                 data:res
             }))
     }
+    async function getVelocity(id, status){
+        let url = `http://localhost:3000/engine?id=${id}&status=${status}`;
+        let rrr = await fetch(url);
+        let hhfg = await rrr.json();
+        return hhfg;
+    }
+
+    async   function putWinners(id,wins,timePassed,color ){
+     const   data={
+            id: id,
+            wins: wins,
+            time:timePassed,
+            color:color
+        }
+
+
+  await fetch(`http://localhost:3000/winners`, {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+  })
+    }
+
+    function getWinners(){
+        fetch("http://localhost:3000/winners")
+            .then(data => data.json())
+            .then(res =>  setState({
+                ...state,
+                winners:res
+            }))
+    }
     return (
-        <ApiContext.Provider value={{ state, setState, getCar  }}>
+        <ApiContext.Provider value={{ state, setState, getCar, getVelocity,putWinners,getWinners }}>
             {children}
         </ApiContext.Provider>
     )

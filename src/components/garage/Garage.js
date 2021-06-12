@@ -15,7 +15,7 @@ export default function Garage() {
             <CreateCar />
             <UpdateCar />
             <RaseResetGenerate />
-<Test/>
+  {/* <Test/> */}
             <CarsList />
         </div></div>
     )

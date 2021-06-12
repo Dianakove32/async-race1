@@ -1,32 +1,65 @@
-import React from 'react';
-
+import React, { useContext,useEffect } from 'react';
+import { ApiContext } from "../../context/Context";
 import './Cars.scss'
 
-export default function Cars({ data, deleteItem, selectItem }) {
+export default function Cars({ data, deleteItem, selectItem, winnersObg }) {
+    const context = useContext(ApiContext);
+    const myRef = React.createRef();
+useEffect(() => {
+    getWinners()
+}, [ ])
 
-    const myRef = React.useRef(null)
-    function draw() {
-        console.log(myRef.current.style)
-        let start = Date.now();
-        let timer = setInterval(function () {
-            let timePassed = Date.now() - start;
-            myRef.current.style.left = timePassed / 5 + 'px';
-            if (timePassed > 4000) clearInterval(timer);
+    const screenWidth = window.screen.width - 220;
+    let speed = Math.random() * (80 - 50) + 50;
+
+    async function draw() {
+        let carCharacteristics = await context.getVelocity(data.id, 'started');
+        let start = new Date().getTime();
+        let timer = setInterval(  function () {
+            let timePassed = new Date().getTime() - start;
+            let newDistance = (0 + (timePassed / 1000) * carCharacteristics.velocity)
+            myRef.current.style.transform = 'translateX(' + newDistance + 'px)';
+            // myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';
+            if (newDistance > screenWidth) {
+                context.putWinners(data.id,data.name,timePassed,data.color)
+                winnersObg.push(data);
+                 clearInterval(timer);
+
+            };
         }, 20);
+
+
+    }
+
+function getWinners( ){
+    context.setState({
+...context.state,
+winners:winnersObg
+    })
+}
+    function stopBTN() {
+        console.log(myRef.current.style)
+        myRef.current.style.transform = ''
     }
 
     return (
         <div id={data.id} className='carsItem'>
+            <div className='flag-container'>
+                <div className='flag'></div>
+                <div className='stick'></div>
+            </div>
+
             <div className='itemButton-block'>
                 <button className='btn' onClick={() => selectItem(data.id)}>select</button>
                 <button className='btn' onClick={() => deleteItem(data.id)}>remove</button>
                 <span>{data.name}</span>
             </div>
             <div className='itemContent'>
+
                 <button className='btn-A btn-letter' onClick={draw}>A</button>
-                <button className='btn-B btn-letter' disabled>B</button>
-                <img id="train" src="https://js.cx/clipart/train.gif" alt='' ref={myRef} />
-                <div > <svg className='train' version="1.0" xmlns="http://www.w3.org/2000/svg"
+                <button className='btn-B btn-letter' onClick={stopBTN}  >B</button>
+                {/* <img className='flag' src= */}
+                <div ref={myRef} className='SomeElementYouWantToAnimate'> <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                     width="70px" height="50px" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
                     <metadata>
                         Created by potrace 1.15, written by Peter Selinger 2001-2017 </metadata>
@@ -67,3 +100,60 @@ export default function Cars({ data, deleteItem, selectItem }) {
         </div>
     )
 }
+
+
+    // function draw (){
+    //     setMove(true)
+    //      }
+
+    // function getEl() {
+    //     var element = document.querySelector('.SomeElementYouWantToAnimate');
+    //     return element
+    // }
+
+    // var start = null;
+    // var element = getEl();
+
+    // function step(timestamp) {
+
+    //     if (!start) start = timestamp;
+    //     var progress = timestamp - start;
+    //     console.log( typeof(progress ))
+    //     console.log(progress)
+    //     console.log(timestamp)
+    //     console.log(typeof(timestamp))
+    //     if (element) {
+    //         element.style.transform = 'translateX(' + Math.min(progress / 10, 1000) + 'px)';
+    //     }
+    //     if (progress < 2000) {
+    //         window.requestAnimationFrame(step);
+    //     }
+    // }
+
+    // function draw() {
+    //     console.log(myRef.current.style)
+    //     let start = Date.now();
+
+    //     let timer = setInterval(function () {
+    //         let timePassed = Date.now() - start;
+    //         myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';
+
+    //           if (timePassed > screenWidth*4) clearInterval(timer);
+
+    //     }, 20);
+    // }
+
+
+    //     let start = new Date().getTime()
+    //     console.log(start)
+    //     function draw() {
+    //     let  curentTime=new Date().getTime()
+    //     console.log(curentTime)
+    //         let newDistance = (2 +((curentTime-start)/1000)*70)
+
+    //             //myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';
+    //              myRef.current.style.transform = 'translateX(' + newDistance + 'px)';
+
+    //               if (newDistance < screenWidth){
+    //  window.requestAnimationFrame(draw)}
+    //         };

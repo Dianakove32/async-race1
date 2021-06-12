@@ -1,2 +1,19 @@
 @import "./scss/normalize";
 @import "./scss/main";
+
+.move{
+    animation-name: slidein;
+    animation-duration: 3s;
+}
+@keyframes slidein {
+    from {
+      margin-left: 0%;
+
+    }
+
+    to {
+      margin-left:80%;
+
+    }
+  }
+
