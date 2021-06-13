@@ -1,13 +1,50 @@
 .winners {
-    width: 100px;
-height: 50px;
+ //   width: 100px;
+//height: 50px;
     color:#fff;
     border-radius: 4px;
     padding: 5px;
-    margin: 10px;
-
+    margin-left:  20px;
+    display: flex;
+ align-items: center;
+   // justify-content: center;
  }
  .winners-container{
-     display: flex;
-     flex-wrap: wrap;
+
+ }
+ .winners-li{
+     list-style-type: disc;
+ }
+ .car{
+     margin-right: 20px;
+ }
+ .winners-row{
+    margin-left: 20px;
+margin-top: 20px;
+     width: 500px;
+display: flex;
+background-color: blue;
+>div{
+    padding: 5px;
+}
+ }
+ .winners-num{
+
+width: 70px;
+ }
+ .winners-car{
+
+    width: 80px;
+ }
+ .winners-name{
+
+    width: 200px;
+ }
+ .winners-win{
+
+    width:50px;
+ }
+ .winners-time{
+    width: 80px;
+
  }

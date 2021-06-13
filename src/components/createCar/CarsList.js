@@ -14,6 +14,9 @@ export default function CarsList(props) {
         await fetch(`http://localhost:3000/garage/${id}`, {
             method: 'DELETE',
         })
+        await fetch(`http://localhost:3000/winners/${id}`, {
+            method: 'DELETE',
+        })
         context.getCar()
     };
 
