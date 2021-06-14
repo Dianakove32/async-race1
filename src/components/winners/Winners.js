@@ -4,36 +4,42 @@ import { ApiContext } from "../../context/Context";
 import './Winners.scss'
 import WinnerItem from './WinnerItem';
 import PaginationWinners from '../Pagination/PaginationWinners';
-
-
+import Spinner from '../Spinner';
 
 export default function Winners() {
-    const [number,setNumber] = useState(false)
-    const [time,setTime] = useState(false)
+    const [number, setNumber] = useState(false)
+
     const context = useContext(ApiContext);
+
     useEffect(() => {
         context.getWinners()
-
+        console.log('useEffect')
     }, [])
+    // useEffect(() => {
+    //     context.putWinners()
+    //     console.log('useEffect')
+    // }, [])
 
-    function sortNumber(){
+    function sortNumber() {
         setNumber(!number)
     }
-    function sortTime(){
+    function sortTime() {
         setNumber(!number)
     }
-    function sortWinners(a,b){
+    function sortWinners(a, b) {
         if (a.time > b.time) {
             return 1
-          } else { return -1 }
+        } else { return -1 }
     }
-    function sortWinners2(a,b){
+    function sortWinners2(a, b) {
         if (a.time < b.time) {
             return -1
-          } else { return -1 }
+        } else { return -1 }
     }
 
-
+    if (!context.state.winners) {
+        return <Spinner />
+    }
 
     const lastDataIndex = context.state.currentWinnersPage * context.state.dataWinnersPage;
     const allPages = Math.ceil(context.state.winners.length / context.state.dataWinnersPage);
@@ -69,20 +75,22 @@ export default function Winners() {
 
     return (
         <div  >
-         <Navbar isActiveLinkWinners={true} />
-         <div className='winners-row'>
-             <div className='winners-num' onClick={sortNumber}>Number</div>
-             <div className='winners-car'>Car</div>
-             <div className='winners-name'>Name</div>
-             <div className='winners-win'>Wins</div>
-             <div className='winners-time' onClick={sortTime}>Time</div>
-         </div>
-         <div  className='winners-container'>
-           {currentData.sort(number ? sortWinners : sortWinners2).map((el,i)=>{
-              return <WinnerItem key={el.id} {...el } i={i}/> })
-           }
-        </div>
-        <PaginationWinners paginate={paginate} nextPage={nextPage} prevPage={prevPage} allPages={allPages} />
+            <Navbar isActiveLinkWinners={true} />
+            <h3>Winners ({context.state.winners.length})</h3>
+            <div className='winners-row'>
+
+                <div className='winners-car'>Car</div>
+                <div className='winners-name'>Name</div>
+                <div className='winners-win'>Wins</div>
+                <div className='winners-time' onClick={sortTime}>Time</div>
+            </div>
+            <ol className='winners-container'>
+                {currentData.sort(number ? sortWinners : sortWinners2).map((el, i) => {
+                    return <ol><WinnerItem key={el.id} {...el} i={i} /></ol>
+                })
+                }
+            </ol>
+            <PaginationWinners paginate={paginate} nextPage={nextPage} prevPage={prevPage} allPages={allPages} />
         </div>
     )
 }

@@ -1,14 +1,12 @@
 import React from 'react';
-import car from '../../assets/car.svg'
 
-export default function WinnerItem({wins,time,color,id, count,i}) {
-let num=i+1
+export default function WinnerItem({ wins, time, color, id, count, i }) {
+
     return (
-        <div key={ id}>
+        <div key={id}>
+            <div className='winners'>
 
-<div    className='winners'>
-<div className='winners-num'>{num}</div>
-<div  className='  winners-car'> <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
+                <div className='  winners-car'> <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                     width="70px" height="50px" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
                     <metadata>
                         Created by potrace 1.15, written by Peter Selinger 2001-2017 </metadata>
@@ -45,12 +43,12 @@ let num=i+1
                         <path d="M11033 1803 c-10 -3 -13 -47 -13 -169 0 -90 4 -164 8 -164 36 0 186 61 239 98 16 10 -216 242 -234 235z" />
                     </g>
                 </svg></div>
-                <div className='winners-name'>{wins} - {color.slice(3)}</div>
+                <div className='winners-name'>{wins} </div>
                 <div className='winners-win'>{count}</div>
-                <div className='winners-time'>{(time/1000).toFixed(2)}</div>
+                <div className='winners-time'>{(time / 1000).toFixed(2)}</div>
 
 
-</div>
+            </div>
         </div>
     )
 }

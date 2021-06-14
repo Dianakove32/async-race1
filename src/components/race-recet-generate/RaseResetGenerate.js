@@ -21,7 +21,6 @@ function get_random_color()
 export default function RaseResetGenerate() {
     const context = useContext(ApiContext);
 
-
     async function createCar() {
         const data = {
             color: '',
@@ -47,9 +46,35 @@ export default function RaseResetGenerate() {
         }
     }
 
+    const screenWidth = window.screen.width - 220;
+    function  raseCar(){
+ context.state.currentDataCar.forEach(element => {
+    console.log(element.id)
+    //  let carCharacteristics =  context.getVelocity(element.id, 'started');
+        let start = new Date().getTime();
+        let timer = setInterval(function () {
+            let timePassed = new Date().getTime() - start;
+            let newDistance = (0 + (timePassed / 1000) * 50)
+            console.log(newDistance  )
+            try {
+                element.style.transform = 'translateX(' + newDistance + 'px)';
+                // myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';
+                if (newDistance > screenWidth) {
+                    context.putWinners(element.id, element.name, timePassed, element.color)
+                    clearInterval(timer);
+                    // setModal(true)
+                    // setTime(timePassed)
+                };
+            } catch {
+                clearInterval(timer);
+            }
+        }, 20);
+       });
+   }
+
     return (
         <div>
-            <button className='btn'>Race</button>
+            <button className='btn' onClick={raseCar}>Race</button>
             <button className='btn'>Reset</button>
             <button className='btn' onClick={createCar}>Generate cars</button>
         </div>

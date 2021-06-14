@@ -12,6 +12,12 @@
     color: rgb(73, 70, 70);
     border:1px solid rgb(73, 70, 70);
     border-radius: 4px;
+    cursor: pointer;
+}
+.btn-A{
+
+    color: rgb(3, 116, 21);
+
 }
 .itemContent{
     display: flex;
@@ -34,7 +40,7 @@
     position: absolute;
     transform: rotate(-90deg);
       bottom: 34px;
-      left: 88%;
+     right: 150px;
     }
 // .stick {
 //     width: 2px;
@@ -44,3 +50,7 @@
 //      left: 89%;
 //       bottom: 0;
 //     }
+.makeStyles-modal-4{
+  //  background: rgba(0,0,0, 0.1);
+    opacity:0.3;
+}

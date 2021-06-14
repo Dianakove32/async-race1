@@ -1,14 +1,17 @@
 import React, { useContext, useEffect } from "react";
-import { ApiContext } from "../../context/Context";
-import Pagination from "../Pagination/Pagination";
+import { ApiContext } from "../../context/Context"; import Pagination from "../Pagination/Pagination";
+import Spinner from "../Spinner";
 import Cars from './Cars';
 import './carsList.scss'
 
 let winnersObg = [];
 
 export default function CarsList(props) {
-
     const context = useContext(ApiContext);
+
+    useEffect(() => {
+        setCurrentData()
+    }, [context.state.currentPage])
 
     const deleteItem = async (id) => {
         await fetch(`http://localhost:3000/garage/${id}`, {
@@ -17,6 +20,8 @@ export default function CarsList(props) {
         await fetch(`http://localhost:3000/winners/${id}`, {
             method: 'DELETE',
         })
+            .then(res => res.json())
+            .catch(console.log('e'))
         context.getCar()
     };
 
@@ -48,6 +53,14 @@ export default function CarsList(props) {
             })
         }
     }
+    function setCurrentData() {
+
+        context.setState({
+            ...context.state,
+            currentDataCar: currentData
+        })
+
+    }
 
     function prevPage() {
         if (context.state.currentPage === 1) {
@@ -58,8 +71,17 @@ export default function CarsList(props) {
                 currentPage: context.state.currentPage - 1
             })
         }
-
     }
+
+    return (
+        <div className="carsList">
+            <h3>Garage ({context.state.data.length})</h3>
+            <Pagination paginate={paginate} nextPage={nextPage} prevPage={prevPage} allPages={allPages} />
+            {currentData.map(el => <Cars key={el.id} data={el} winnersObg={winnersObg} deleteItem={deleteItem} selectItem={selectItem} />)}
+
+        </div>
+    )
+}
 
     // const screenWidth = window.screen.width - 220;
     // console.log(screenWidth)
@@ -80,12 +102,19 @@ export default function CarsList(props) {
 
 
     //}
-    return (
-        <div className="carsList">
-            <h3>Garage ({context.state.data.length})</h3>
-            <Pagination paginate={paginate} nextPage={nextPage} prevPage={prevPage} allPages={allPages} />
-            {currentData.map(el => <Cars key={el.id} data={el} winnersObg={winnersObg} deleteItem={deleteItem} selectItem={selectItem} />)}
 
-        </div>
-    )
-}
+        // const deleteItem =  (id) => {
+    //     fetch(`http://localhost:3000/garage/${id}`, {
+    //         method: 'DELETE',
+    //     }).then((data) => {
+    //         console.log(data);
+    //       })
+    //     .catch(error => console.log(error.message))
+    //     .then(
+    //         fetch(`http://localhost:3000/winners/${id}`, {
+    //             method: 'DELETE',
+    //         })
+    //         .then(res => res.json())
+    //         .catch(console.log('e')))
+    //     context.getCar()
+    // };

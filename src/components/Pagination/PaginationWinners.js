@@ -11,7 +11,7 @@ export default function PaginationWinners({ paginate, nextPage, prevPage, allPag
 
     }
     return (
-        <div>
+        <div className='pagination-winner'>
             <h4>Page № {context.state.currentWinnersPage}</h4>
             <div className='pagination-container'>
             {
