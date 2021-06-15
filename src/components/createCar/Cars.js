@@ -31,20 +31,21 @@ export default function Cars({ data, deleteItem, selectItem, winnersObg }) {
     const myRef = React.createRef();
     const ARef = React.useRef();
     const BRef = React.useRef();
-
     const classes = useStyles();
     const rootRef = React.useRef(null);
 
     const screenWidth = window.screen.width - 220;
     //  let speed = Math.random() * (80 - 50) + 50;
     async function draw(id, status) {
+        ARef.current.style.color = "rgb(73, 70, 70)"
+BRef.current.style.color = "red"
         let carCharacteristics = await context.getVelocity(id, status);
+
         let start = new Date().getTime();
         let timer = setInterval(function () {
             let timePassed = new Date().getTime() - start;
             let newDistance = (0 + (timePassed / 1000) * carCharacteristics.velocity)
-ARef.current.style.color = "rgb(73, 70, 70)"
-BRef.current.style.color = "red"
+
             try {
                 myRef.current.style.transform = 'translateX(' + newDistance + 'px)';
                 // myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';

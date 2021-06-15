@@ -10,7 +10,8 @@ const initialState = {
     currentWinnersPage: 1,
     dataWinnersPage: 10,
     winners: [],
-    velosity: {}
+    velosity: {},
+    carArr:[]
 }
 
 export default function ContextProvider({ children }) {
@@ -42,7 +43,8 @@ export default function ContextProvider({ children }) {
             wins: wins,
             time: timePassed,
             color: color,
-            count: 1
+            count: 1,
+
         }
         await fetch(`http://localhost:3000/winners?id=${id}`)
             .then(data => data.json())

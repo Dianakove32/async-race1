@@ -10,8 +10,16 @@ export default function CarsList(props) {
     const context = useContext(ApiContext);
 
     useEffect(() => {
+        getCarPict()
         setCurrentData()
     }, [context.state.currentPage])
+
+
+    function getCarPict(){
+             const cars=Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
+return cars
+
+    }
 
     const deleteItem = async (id) => {
         await fetch(`http://localhost:3000/garage/${id}`, {
