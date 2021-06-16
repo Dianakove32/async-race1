@@ -8,17 +8,18 @@ import Spinner from '../Spinner';
 
 export default function Winners() {
     const [number, setNumber] = useState(false)
-
     const context = useContext(ApiContext);
 
     useEffect(() => {
-        context.getWinners()
-        console.log('useEffect')
+        try{
+            context.getWinners()
+        } catch(e){
+console.log(e)
+        }
+      //  return () => context.getWinners()
+
+
     }, [])
-    // useEffect(() => {
-    //     context.putWinners()
-    //     console.log('useEffect')
-    // }, [])
 
     function sortNumber() {
         setNumber(!number)
@@ -26,11 +27,13 @@ export default function Winners() {
     function sortTime() {
         setNumber(!number)
     }
+
     function sortWinners(a, b) {
         if (a.time > b.time) {
             return 1
         } else { return -1 }
     }
+
     function sortWinners2(a, b) {
         if (a.time < b.time) {
             return -1
@@ -45,6 +48,7 @@ export default function Winners() {
     const allPages = Math.ceil(context.state.winners.length / context.state.dataWinnersPage);
     const firstDataIndex = lastDataIndex - context.state.dataWinnersPage;
     const currentData = context.state.winners.slice(firstDataIndex, lastDataIndex);
+
     const paginate = pageNumber => context.setState({
         ...context.state,
         currentWinnersPage: pageNumber
@@ -70,7 +74,6 @@ export default function Winners() {
                 currentWinnersPage: context.state.currentWinnersPage - 1
             })
         }
-
     }
 
     return (
@@ -78,7 +81,6 @@ export default function Winners() {
             <Navbar isActiveLinkWinners={true} />
             <h3>Winners ({context.state.winners.length})</h3>
             <div className='winners-row'>
-
                 <div className='winners-car'>Car</div>
                 <div className='winners-name'>Name</div>
                 <div className='winners-win'>Wins</div>
@@ -86,7 +88,7 @@ export default function Winners() {
             </div>
             <ol className='winners-container'>
                 {currentData.sort(number ? sortWinners : sortWinners2).map((el, i) => {
-                    return <ol><WinnerItem key={el.id} {...el} i={i} /></ol>
+                    return <li><WinnerItem key={ i} {...el} i={i} /></li>
                 })
                 }
             </ol>

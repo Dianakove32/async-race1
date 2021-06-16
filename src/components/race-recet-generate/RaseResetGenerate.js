@@ -1,13 +1,29 @@
-import React, { useContext, useEffect } from 'react';
+import { Modal } from '@material-ui/core';
+import React, { useContext, useEffect, useState } from 'react';
 import { ApiContext } from "../../context/Context";
+import { makeStyles } from '@material-ui/core/styles';
 
-// const data = {
-//     color: '#fff',
-//     name: 'BMW'
-// }
+const useStyles = makeStyles((theme) => ({
+    root: {
+        height: 300,
+        flexGrow: 1,
+        minWidth: 300,
+        transform: 'translateZ(0)',
+        '@media all and (-ms-high-contrast: none)': {
+            display: 'none',
 
-//let color = ['#a69494', '#de2c2c', '#8b2cde', '#2c4ade', '#edeff7', '#54e38b', '#ebeb3b', '#eb610c', '#870e09'];
-let name = ['Tesla', 'Mersedes', 'BMW', 'Ford', 'Lada', 'Audi', 'Bentley', 'Fiat', 'Kia'];
+        },
+    },
+    modal: {
+        display: 'flex',
+        padding: theme.spacing(1),
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+}));
+
+let name = ['Tesla Cybertruck', 'Mersedes Bebz', 'BMW I8', 'Ford F150', 'Lada NIVA', 'Audi A4', 'Bentley', 'Fiat 500', 'Kia NIRO',
+'Tesla S', 'Mersedes S63', 'BMW X6', 'Ford Raptor','Tesla X', 'Lada VESTA', 'Kia Seltos','Tesla S Plaid', 'Audi R8', 'Bentley Muslanne','BMW M4', 'Fiat TIPO', 'Kia k5'];
 function get_random_color() {
     var color = "";
     for (var i = 0; i < 3; i++) {
@@ -18,18 +34,22 @@ function get_random_color() {
 }
 
 export default function RaseResetGenerate() {
+    const [modal, setModal] = useState(false)
+    const [time, setTime] = useState(null)
     const context = useContext(ApiContext);
     useEffect(() => {
+        getCurrentData()
+    },[] )
 
+function getCurrentData(){
+    return context.state.currentPage
+}
 
-    }, [context.state.currentPage])
+    const classes = useStyles();
+    const rootRef = React.useRef(null);
+    console.log(context.state.currentDataCar)
 
-// function getCarsArr(){
-//           const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
-//     console.log(cars)
-//     return cars
-// }
-const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
+    const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
     async function createCar() {
         const data = {
             color: '',
@@ -56,12 +76,16 @@ const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'
     }
 
     const screenWidth = window.screen.width - 220;
+
     async function raseCar() {
 
-        for (let i = 0; i < cars.length; i++) {
 
+        let winner = null;
+        for (let i = 0; i < cars.length; i++) {
+console.log(context.state.currentDataCar)
             let carCharacteristics = await context.getVelocity(context.state.currentDataCar[i].id, 'started');
             let start = new Date().getTime();
+            // eslint-disable-next-line no-loop-func
             let timer = setInterval(function () {
                 let timePassed = new Date().getTime() - start;
                 let newDistance = (0 + (timePassed / 1000) * carCharacteristics.velocity)
@@ -69,11 +93,21 @@ const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'
                 try {
                     cars[i].style.transform = 'translateX(' + newDistance + 'px)';
                     if (newDistance > screenWidth) {
-                        // context.putWinners(context.state.currentDataCar[i].id,
+                        if (!winner) {
+                            winner = cars[i]
+                            context.putWinners(context.state.currentDataCar[i].id, context.state.currentDataCar[i].name, timePassed, context.state.currentDataCar[i].color)
+                            setModal(true)
+                            clearInterval(timer)
+                            setTime(timePassed)
+                        } else {
+                            clearInterval(timer);
+                            setModal(false)
+                        }
+                        //
                         //     context.state.currentDataCar[i].name,
                         //     timePassed, context.state.currentDataCar[i].color)
-                        clearInterval(timer);
-                        // setModal(true)
+
+                        //
                         // setTime(timePassed)
                     };
                 } catch {
@@ -82,6 +116,10 @@ const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'
             }, 20);
         }
     }
+
+    setTimeout(() => {
+        setModal(false)
+    }, 3000);
 
     function resetCar() {
 
@@ -98,11 +136,22 @@ const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'
         }
     }
 
+
+
     return (
         <div>
             <button className='btn' onClick={raseCar}>Race</button>
             <button className='btn' onClick={resetCar}>Reset</button>
             <button className='btn' onClick={createCar}>Generate cars</button>
+            <Modal
+                open={modal}
+                className={classes.modal}
+                container={() => rootRef.current}>
+                <div>
+                    {/* <h2><b>{data.name}</b> finished in {(time / 1000).toFixed(2)} second</h2> */}
+                    <h2>The best time  {(time / 1000).toFixed(2)} second</h2>
+                </div>
+            </Modal>
         </div>
     )
 }

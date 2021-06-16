@@ -25,10 +25,14 @@ export default function ContextProvider({ children }) {
     function getCar() {
         fetch("http://localhost:3000/garage")
             .then(data => data.json())
-            .then(res => setState({
+            .then(res =>{
+                let curentData = res.slice(0,7)
+               setState({
                 ...state,
-                data: res
-            }))
+                data: res,
+                currentDataCar:curentData
+            })
+            })
     }
     async function getVelocity(id, status) {
         let url = `http://localhost:3000/engine?id=${id}&status=${status}`;

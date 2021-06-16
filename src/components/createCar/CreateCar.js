@@ -1,14 +1,9 @@
-import React, { useState, useContext} from 'react';
+import React, { useState, useContext } from 'react';
 import { ApiContext } from "../../context/Context";
 
-
-
-
-
 export default function CreateCar() {
-     const context = useContext(ApiContext);
-    // const [color, setColor] = useState('')
-    // const [model, setModel] = useState('')
+    const context = useContext(ApiContext);
+
     const [data, setData] = useState({ color: '', name: '' })
     function setCarColor(e) {
         let color = e.target.value
@@ -18,10 +13,7 @@ export default function CreateCar() {
             color: `${color}`
         })
     }
-    // function setCarColor(e) {
-    //     let color = e.target.value
-    //     setColor(color)
-    // }
+
     function setCarModel(e) {
         let model = e.target.value
         if (!model) return
@@ -43,7 +35,7 @@ export default function CreateCar() {
                 body: JSON.stringify(data)
             })
         }
-context.getCar()
+        context.getCar()
     }
 
 
@@ -51,7 +43,7 @@ context.getCar()
         <div>
 
             <input type='text' onChange={(e) => setCarModel(e)} />
-            <input type="color"  onChange={(e) => setCarColor(e)} />
+            <input type="color" onChange={(e) => setCarColor(e)} />
             <button className="btn" onClick={createCar}>Create car</button>
 
         </div>

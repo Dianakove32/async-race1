@@ -1,12 +1,12 @@
 import React, { useContext, useEffect } from "react";
-import { ApiContext } from "../../context/Context"; import Pagination from "../Pagination/Pagination";
-import Spinner from "../Spinner";
+import { ApiContext } from "../../context/Context";
+import Pagination from "../Pagination/Pagination";
 import Cars from './Cars';
 import './carsList.scss'
 
 let winnersObg = [];
 
-export default function CarsList(props) {
+export default function CarsList() {
     const context = useContext(ApiContext);
 
     useEffect(() => {
@@ -15,10 +15,9 @@ export default function CarsList(props) {
     }, [context.state.currentPage])
 
 
-    function getCarPict(){
-             const cars=Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
-return cars
-
+    function getCarPict() {
+        const cars = Array.from(document.querySelectorAll('.SomeElementYouWantToAnimate'))
+        return cars
     }
 
     const deleteItem = async (id) => {
@@ -61,13 +60,12 @@ return cars
             })
         }
     }
-    function setCurrentData() {
 
+    function setCurrentData() {
         context.setState({
             ...context.state,
             currentDataCar: currentData
         })
-
     }
 
     function prevPage() {
@@ -86,43 +84,6 @@ return cars
             <h3>Garage ({context.state.data.length})</h3>
             <Pagination paginate={paginate} nextPage={nextPage} prevPage={prevPage} allPages={allPages} />
             {currentData.map(el => <Cars key={el.id} data={el} winnersObg={winnersObg} deleteItem={deleteItem} selectItem={selectItem} />)}
-
         </div>
     )
 }
-
-    // const screenWidth = window.screen.width - 220;
-    // console.log(screenWidth)
-    // let speed = Math.random() * (80 - 50) + 50;
-    // function draw(myRef, data) {
-    //     let start = new Date().getTime();
-    //     let timer = setInterval(function () {
-    //         let timePassed = new Date().getTime() - start;
-    //         let newDistance = (0 + (timePassed / 1000) * speed)
-    //         myRef.current.style.transform = 'translateX(' + newDistance + 'px)';
-    //         // myRef.current.style.transform = 'translateX(' + Math.min(timePassed / 5) + 'px)';
-    //         if (newDistance > screenWidth) {
-    //             winnersObg.push(data);
-    //             clearInterval(timer);
-
-    //         };
-    //     }, 20);
-
-
-    //}
-
-        // const deleteItem =  (id) => {
-    //     fetch(`http://localhost:3000/garage/${id}`, {
-    //         method: 'DELETE',
-    //     }).then((data) => {
-    //         console.log(data);
-    //       })
-    //     .catch(error => console.log(error.message))
-    //     .then(
-    //         fetch(`http://localhost:3000/winners/${id}`, {
-    //             method: 'DELETE',
-    //         })
-    //         .then(res => res.json())
-    //         .catch(console.log('e')))
-    //     context.getCar()
-    // };

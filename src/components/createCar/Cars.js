@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { ApiContext } from "../../context/Context";
 import './Cars.scss';
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Cars({ data, deleteItem, selectItem, winnersObg }) {
     const [modal, setModal] = useState(false)
     const [time, setTime] = useState(null)
-    const [winner, setWinner] = useState( [])
+    const [winner, setWinner] = useState([])
     const context = useContext(ApiContext);
     const myRef = React.createRef();
     const ARef = React.useRef();
@@ -38,7 +38,7 @@ export default function Cars({ data, deleteItem, selectItem, winnersObg }) {
     //  let speed = Math.random() * (80 - 50) + 50;
     async function draw(id, status) {
         ARef.current.style.color = "rgb(73, 70, 70)"
-BRef.current.style.color = "red"
+        BRef.current.style.color = "red"
         let carCharacteristics = await context.getVelocity(id, status);
 
         let start = new Date().getTime();
@@ -56,7 +56,7 @@ BRef.current.style.color = "red"
                     setModal(true)
                     setTime(timePassed)
                     ARef.current.style.color = ""
-BRef.current.style.color = ""
+                    BRef.current.style.color = ""
                 };
             } catch {
                 clearInterval(timer);
@@ -89,8 +89,8 @@ BRef.current.style.color = ""
             </div>
             <div className='itemContent'>
 
-                <button className='btn-A btn-letter'  ref={ARef} onClick={() => draw(data.id, 'started')}>A</button>
-                <button className='btn-B btn-letter' ref={BRef}  onClick={ stopBTN}  >B</button>
+                <button className='btn-A btn-letter' ref={ARef} onClick={() => draw(data.id, 'started')}>A</button>
+                <button className='btn-B btn-letter' ref={BRef} onClick={stopBTN}  >B</button>
                 {/* <img className='flag' src= */}
                 <div ref={myRef} className='SomeElementYouWantToAnimate'> <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
                     width="70px" height="50px" viewBox="0 0 1280.000000 640.000000" preserveAspectRatio="xMidYMid meet">
